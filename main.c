@@ -5,7 +5,7 @@ int main()
     init_window();
     set_window();
 
-    while (TRUE)
+    while (window.status != EXIT)
     {
         if (window.screen_x != COLS || window.screen_y != LINES) { init_data(); }
 
@@ -20,13 +20,9 @@ int main()
             display_char();
             window.status = WAIT;
         }
-
-        window.exit_code = getch();
-        if (window.exit_code == ESC)
-        {
-            unset_window();
-            return 0;
-        }
+        exit_interval();
         usleep(DELAY);
     }
+    unset_window();
+    return 0;
 }

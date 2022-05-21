@@ -6,11 +6,12 @@
 #define NONE -1
 #define NONE_CHAR '\0'
 
-#define MOVE 1
 #define WAIT 0
+#define MOVE 1
+#define EXIT 2
 #define INTERVAL 40000
 #define DELAY 1000
-#define ESC 27
+#define KEY_ESC 27
 
 #define WHITE 1
 #define GREEN 2

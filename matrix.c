@@ -64,15 +64,12 @@ void add_char()
 {
     for (int i = 0; i < window.screen_x; i += 2)
     {
-        int add_flag = FALSE;
+        int flag = FALSE;
         for (int j = 0; j < window.char_count; j++)
         {
-            if (char_data[j].x == i && char_data[j].y == 1)
-            {
-                add_flag = TRUE;
-            }
+            if (char_data[j].x == i && char_data[j].y == 1) { flag = TRUE; }
         }
-        if (add_flag == TRUE)
+        if (flag == TRUE)
         {
             if (add_data[i].len != 0)
             {
@@ -106,16 +103,16 @@ void move_char()
     for (int i = 0; i < window.char_count; i++) { char_data[i].y += 1; }
     for (int i = window.char_count - 1; i >= 0; i--)
     {
-        int move_flag = FALSE;
+        int flag = FALSE;
         for (int j = 0; j < window.char_count; j++)
         {
             if (char_data[j].y == char_data[i].y + 1 && char_data[j].x == char_data[i].x)
             {
                 char_data[i].ch = char_data[j].ch;
-                move_flag = TRUE;
+                flag = TRUE;
             }
         }
-        if (move_flag == FALSE) { char_data[i].ch = char_list[rand() % CHAR_LIST_LEN]; }
+        if (flag == FALSE) { char_data[i].ch = char_list[rand() % CHAR_LIST_LEN]; }
     }
 }
 
@@ -143,4 +140,10 @@ void display_char()
         }
     }
     refresh();
+}
+
+void exit_interval()
+{
+    window.exit_code = getch();
+    if (window.exit_code == KEY_ESC) { window.status = EXIT; }
 }

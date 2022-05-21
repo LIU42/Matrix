@@ -42,4 +42,5 @@ void add_char();
 void move_char();
 void delete_char();
 void display_char();
+void exit_interval();
 #endif
