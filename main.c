@@ -2,27 +2,27 @@
 
 int main()
 {
-    init_window();
-    set_window();
+    initWindow();
+    setWindow();
 
     while (window.status != EXIT)
     {
-        if (window.screen_x != COLS || window.screen_y != LINES) { init_data(); }
+        if (window.screenX != COLS || window.screenY != LINES) { initData(); }
 
-        window.screen_x = COLS;
-        window.screen_y = LINES;
+        window.screenX = COLS;
+        window.screenY = LINES;
 
         if (window.status == MOVE)
         {
-            move_char();
-            add_char();
-            delete_char();
-            display_char();
+            moveChar();
+            addChar();
+            deleteChar();
+            displayChar();
             window.status = WAIT;
         }
-        exit_interval();
+        exitInterval();
         usleep(DELAY);
     }
-    unset_window();
+    unsetWindow();
     return 0;
 }

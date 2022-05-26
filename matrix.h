@@ -26,21 +26,21 @@ struct Window
 {
     pthread_t counter;
     int status;
-    int screen_x;
-    int screen_y;
-    int exit_code;
-    int char_count;
+    int screenX;
+    int screenY;
+    int exitCode;
+    int charCount;
 };
 
 extern struct Window window;
 
-void init_window();
-void set_window();
-void unset_window();
-void init_data();
-void add_char();
-void move_char();
-void delete_char();
-void display_char();
-void exit_interval();
+void initWindow();
+void setWindow();
+void unsetWindow();
+void initData();
+void addChar();
+void moveChar();
+void deleteChar();
+void displayChar();
+void exitInterval();
 #endif

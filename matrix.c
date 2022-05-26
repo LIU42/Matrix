@@ -1,12 +1,12 @@
 #include "matrix.h"
 
 struct Window window;
-struct Point char_data[CHAR_MAX_COUNT];
-struct String add_data[ADD_CHAR_COUNT];
+struct Point charData[CHAR_MAX_COUNT];
+struct String addData[ADD_CHAR_COUNT];
 
-const char char_list[CHAR_LIST_LEN] = CHAR_LIST;
+const char charList[CHAR_LIST_LEN] = CHAR_LIST;
 
-void* function_counter()
+void* functionCounter()
 {
     while (TRUE)
     {
@@ -15,13 +15,13 @@ void* function_counter()
     }
 }
 
-void init_window()
+void initWindow()
 {
     srand((unsigned int)time(NULL));
-    pthread_create(&window.counter, NULL, function_counter, NULL);
+    pthread_create(&window.counter, NULL, functionCounter, NULL);
 }
 
-void set_window()
+void setWindow()
 {
     initscr();
     cbreak();
@@ -34,7 +34,7 @@ void set_window()
     init_pair(GREEN, COLOR_GREEN, COLOR_BLACK);
 }
 
-void unset_window()
+void unsetWindow()
 {
     nocbreak();
     keypad(stdscr, TRUE);
@@ -43,42 +43,42 @@ void unset_window()
     endwin();
 }
 
-void init_data()
+void initData()
 {
     for (int i = 0; i < CHAR_MAX_COUNT; i++)
     {
-        char_data[i].x = NONE;
-        char_data[i].y = NONE;
-        char_data[i].color = NONE;
-        char_data[i].ch = NONE_CHAR;
+        charData[i].x = NONE;
+        charData[i].y = NONE;
+        charData[i].color = NONE;
+        charData[i].ch = NONE_CHAR;
     }
     for (int i = 0; i < ADD_CHAR_COUNT; i++)
     {
-        add_data[i].len = 0;
-        add_data[i].ch = NONE_CHAR;
+        addData[i].len = 0;
+        addData[i].ch = NONE_CHAR;
     }
-    window.char_count = 0;
+    window.charCount = 0;
 }
 
-void add_char()
+void addChar()
 {
-    for (int i = 0; i < window.screen_x; i += 2)
+    for (int i = 0; i < window.screenX; i += 2)
     {
         int flag = FALSE;
-        for (int j = 0; j < window.char_count; j++)
+        for (int j = 0; j < window.charCount; j++)
         {
-            if (char_data[j].x == i && char_data[j].y == 1) { flag = TRUE; }
+            if (charData[j].x == i && charData[j].y == 1) { flag = TRUE; }
         }
         if (flag == TRUE)
         {
-            if (add_data[i].len != 0)
+            if (addData[i].len != 0)
             {
-                char_data[window.char_count].x = i;
-                char_data[window.char_count].y = 0;
-                char_data[window.char_count].color = GREEN;
-                char_data[window.char_count].ch = add_data[i].ch;
-                window.char_count += 1;
-                add_data[i].len -= 1;
+                charData[window.charCount].x = i;
+                charData[window.charCount].y = 0;
+                charData[window.charCount].color = GREEN;
+                charData[window.charCount].ch = addData[i].ch;
+                window.charCount += 1;
+                addData[i].len -= 1;
             }
         }
         else
@@ -86,64 +86,64 @@ void add_char()
             int num = rand() % P_BASE;
             if (num <= P_ADD)
             {
-                add_data[i].len = rand() % (STRING_MAX_LEN - STRING_MIN_LEN) + STRING_MIN_LEN;
-                add_data[i].ch = char_list[rand() % CHAR_LIST_LEN];
-                char_data[window.char_count].x = i;
-                char_data[window.char_count].y = 0;
-                char_data[window.char_count].color = WHITE;
-                char_data[window.char_count].ch = add_data[i].ch;
-                window.char_count += 1;
+                addData[i].len = rand() % (STRING_MAX_LEN - STRING_MIN_LEN) + STRING_MIN_LEN;
+                addData[i].ch = charList[rand() % CHAR_LIST_LEN];
+                charData[window.charCount].x = i;
+                charData[window.charCount].y = 0;
+                charData[window.charCount].color = WHITE;
+                charData[window.charCount].ch = addData[i].ch;
+                window.charCount += 1;
             }
         }
     }
 }
 
-void move_char()
+void moveChar()
 {
-    for (int i = 0; i < window.char_count; i++) { char_data[i].y += 1; }
-    for (int i = window.char_count - 1; i >= 0; i--)
+    for (int i = 0; i < window.charCount; i++) { charData[i].y += 1; }
+    for (int i = window.charCount - 1; i >= 0; i--)
     {
         int flag = FALSE;
-        for (int j = 0; j < window.char_count; j++)
+        for (int j = 0; j < window.charCount; j++)
         {
-            if (char_data[j].y == char_data[i].y + 1 && char_data[j].x == char_data[i].x)
+            if (charData[j].y == charData[i].y + 1 && charData[j].x == charData[i].x)
             {
-                char_data[i].ch = char_data[j].ch;
+                charData[i].ch = charData[j].ch;
                 flag = TRUE;
             }
         }
-        if (flag == FALSE) { char_data[i].ch = char_list[rand() % CHAR_LIST_LEN]; }
+        if (flag == FALSE) { charData[i].ch = charList[rand() % CHAR_LIST_LEN]; }
     }
 }
 
-void delete_char()
+void deleteChar()
 {
-    for (int i = 0; i < window.char_count; i++)
+    for (int i = 0; i < window.charCount; i++)
     {
-        if (char_data[i].y >= window.screen_y)
+        if (charData[i].y >= window.screenY)
         {
-            for (int j = i; char_data[j].x != -1; j++) { char_data[j] = char_data[j + 1]; }
-            window.char_count -= 1;
+            for (int j = i; charData[j].x != -1; j++) { charData[j] = charData[j + 1]; }
+            window.charCount -= 1;
         }
     }
 }
 
-void display_char()
+void displayChar()
 {
     erase();
-    for (int i = 0; i < window.char_count; i++)
+    for (int i = 0; i < window.charCount; i++)
     {
-        if (char_data[i].y < window.screen_y)
+        if (charData[i].y < window.screenY)
         {
-            attron(COLOR_PAIR(char_data[i].color));
-            mvaddch(char_data[i].y, char_data[i].x, char_data[i].ch);
+            attron(COLOR_PAIR(charData[i].color));
+            mvaddch(charData[i].y, charData[i].x, charData[i].ch);
         }
     }
     refresh();
 }
 
-void exit_interval()
+void exitInterval()
 {
-    window.exit_code = getch();
-    if (window.exit_code == KEY_ESC) { window.status = EXIT; }
+    window.exitCode = getch();
+    if (window.exitCode == KEY_ESC) { window.status = EXIT; }
 }
