@@ -64,12 +64,12 @@ void addChar()
 {
     for (int i = 0; i < window.screenX; i += 2)
     {
-        int flag = FALSE;
+        int isAdd = FALSE;
         for (int j = 0; j < window.charCount; j++)
         {
-            if (charData[j].x == i && charData[j].y == 1) { flag = TRUE; }
+            if (charData[j].x == i && charData[j].y == 1) { isAdd = TRUE; }
         }
-        if (flag == TRUE)
+        if (isAdd == TRUE)
         {
             if (addData[i].len != 0)
             {
@@ -103,16 +103,16 @@ void moveChar()
     for (int i = 0; i < window.charCount; i++) { charData[i].y += 1; }
     for (int i = window.charCount - 1; i >= 0; i--)
     {
-        int flag = FALSE;
+        int isMove = FALSE;
         for (int j = 0; j < window.charCount; j++)
         {
             if (charData[j].y == charData[i].y + 1 && charData[j].x == charData[i].x)
             {
                 charData[i].ch = charData[j].ch;
-                flag = TRUE;
+                isMove = TRUE;
             }
         }
-        if (flag == FALSE) { charData[i].ch = charList[rand() % CHAR_LIST_LEN]; }
+        if (isMove == FALSE) { charData[i].ch = charList[rand() % CHAR_LIST_LEN]; }
     }
 }
 
