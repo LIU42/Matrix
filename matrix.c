@@ -6,7 +6,7 @@ struct AddDataNode addData[ADD_CHAR_COUNT];
 
 const char charList[CHAR_LIST_LEN] = CHAR_LIST;
 
-void* functionCounter()
+void* counterFunction()
 {
     while (TRUE)
     {
@@ -18,7 +18,7 @@ void* functionCounter()
 void initWindow()
 {
     srand((unsigned int)time(NULL));
-    pthread_create(&window.counter, NULL, functionCounter, NULL);
+    pthread_create(&window.counter, NULL, counterFunction, NULL);
 }
 
 void setWindow()
