@@ -1,8 +1,8 @@
 #include "matrix.h"
 
 struct Window window;
-struct Point charData[CHAR_MAX_COUNT];
-struct String addData[ADD_CHAR_COUNT];
+struct CharDataNode charData[CHAR_MAX_COUNT];
+struct AddDataNode addData[ADD_CHAR_COUNT];
 
 const char charList[CHAR_LIST_LEN] = CHAR_LIST;
 
@@ -64,12 +64,12 @@ void addChar()
 {
     for (int i = 0; i < window.screenX; i += 2)
     {
-        int isAdd = FALSE;
+        int isNeedAdd = FALSE;
         for (int j = 0; j < window.charCount; j++)
         {
-            if (charData[j].x == i && charData[j].y == 1) { isAdd = TRUE; }
+            if (charData[j].x == i && charData[j].y == 1) { isNeedAdd = TRUE; }
         }
-        if (isAdd == TRUE)
+        if (isNeedAdd)
         {
             if (addData[i].len != 0)
             {
@@ -83,8 +83,7 @@ void addChar()
         }
         else
         {
-            int num = rand() % P_BASE;
-            if (num <= P_ADD)
+            if (rand() % P_BASE <= P_ADD)
             {
                 addData[i].len = rand() % (STRING_MAX_LEN - STRING_MIN_LEN) + STRING_MIN_LEN;
                 addData[i].ch = charList[rand() % CHAR_LIST_LEN];
@@ -103,16 +102,16 @@ void moveChar()
     for (int i = 0; i < window.charCount; i++) { charData[i].y += 1; }
     for (int i = window.charCount - 1; i >= 0; i--)
     {
-        int isMove = FALSE;
+        int isBottomOne = TRUE;
         for (int j = 0; j < window.charCount; j++)
         {
             if (charData[j].y == charData[i].y + 1 && charData[j].x == charData[i].x)
             {
                 charData[i].ch = charData[j].ch;
-                isMove = TRUE;
+                isBottomOne = FALSE;
             }
         }
-        if (isMove == FALSE) { charData[i].ch = charList[rand() % CHAR_LIST_LEN]; }
+        if (isBottomOne) { charData[i].ch = charList[rand() % CHAR_LIST_LEN]; }
     }
 }
 

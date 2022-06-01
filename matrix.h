@@ -8,7 +8,7 @@
 
 #include "config.h"
 
-struct Point
+struct CharDataNode
 {
     int x;
     int y;
@@ -16,7 +16,7 @@ struct Point
     char ch;
 };
 
-struct String
+struct AddDataNode
 {
     int len;
     char ch;
