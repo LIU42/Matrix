@@ -8,7 +8,7 @@
 
 #include "config.h"
 
-struct CharDataNode
+struct CharData
 {
     int x;
     int y;
@@ -16,7 +16,7 @@ struct CharDataNode
     char ch;
 };
 
-struct AddDataNode
+struct AddData
 {
     int len;
     char ch;

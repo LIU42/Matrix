@@ -1,8 +1,8 @@
 #include "matrix.h"
 
 struct Window window;
-struct CharDataNode charData[CHAR_MAX_COUNT];
-struct AddDataNode addData[ADD_CHAR_COUNT];
+struct CharData charData[CHAR_MAX_COUNT];
+struct AddData addData[ADD_CHAR_COUNT];
 
 const char charList[CHAR_LIST_LEN] = CHAR_LIST;
 
