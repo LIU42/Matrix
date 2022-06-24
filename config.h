@@ -16,8 +16,8 @@
 #define WHITE 1
 #define GREEN 2
 
-#define P_ADD 5
-#define P_BASE 100
+#define RANDOM_ADD 5
+#define RANDOM_BASE 100
 #define STRING_MAX_LEN 25
 #define STRING_MIN_LEN 5
 

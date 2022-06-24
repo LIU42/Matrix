@@ -83,7 +83,7 @@ void addChar()
         }
         else
         {
-            if (rand() % P_BASE <= P_ADD)
+            if (rand() % RANDOM_BASE <= RANDOM_ADD)
             {
                 addData[i].len = rand() % (STRING_MAX_LEN - STRING_MIN_LEN) + STRING_MIN_LEN;
                 addData[i].ch = charList[rand() % CHAR_LIST_LEN];
