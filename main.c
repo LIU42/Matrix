@@ -4,6 +4,7 @@ int main()
 {
     initWindow();
     setWindow();
+    setColor();
 
     while (window.status != EXIT)
     {

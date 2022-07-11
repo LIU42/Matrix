@@ -36,6 +36,7 @@ extern struct Window window;
 
 void initWindow();
 void setWindow();
+void setColor();
 void unsetWindow();
 void initData();
 void addChar();

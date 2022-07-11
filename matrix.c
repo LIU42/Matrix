@@ -29,6 +29,10 @@ void setWindow()
     curs_set(FALSE);
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
+}
+
+void setColor()
+{
     start_color();
     init_pair(WHITE, COLOR_WHITE, COLOR_BLACK);
     init_pair(GREEN, COLOR_GREEN, COLOR_BLACK);
