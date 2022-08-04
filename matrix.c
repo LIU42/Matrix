@@ -121,8 +121,8 @@ void deleteChar()
 
 void update()
 {
-    addChar();
     moveChar();
+    addChar();
     deleteChar();
 }
 
