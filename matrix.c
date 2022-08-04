@@ -1,24 +1,13 @@
 #include "matrix.h"
 
-struct Window window;
-struct CharData charData[CHAR_MAX_COUNT];
-struct AddData addData[ADD_CHAR_COUNT];
-
-const char charList[CHAR_LIST_LEN] = CHAR_LIST;
-
-void* counterFunction()
-{
-    while (TRUE)
-    {
-        window.status = MOVE;
-        usleep(INTERVAL);
-    }
-}
-
 void initWindow()
 {
-    srand((unsigned int)time(NULL));
-    pthread_create(&window.counter, NULL, counterFunction, NULL);
+    window.status = RUNNING;
+    window.screenX = 0;
+    window.screenY = 0;
+    window.exitCode = 0;
+    window.charCount = 0;
+    strcpy(window.charList, CHAR_LIST);
 }
 
 void setWindow()
@@ -51,15 +40,15 @@ void initData()
 {
     for (int i = 0; i < CHAR_MAX_COUNT; i++)
     {
-        charData[i].x = NONE;
-        charData[i].y = NONE;
-        charData[i].color = NONE;
-        charData[i].ch = NONE_CHAR;
+        window.charData[i].x = NONE;
+        window.charData[i].y = NONE;
+        window.charData[i].color = NONE;
+        window.charData[i].ch = NONE_CHAR;
     }
     for (int i = 0; i < ADD_CHAR_COUNT; i++)
     {
-        addData[i].len = 0;
-        addData[i].ch = NONE_CHAR;
+        window.addData[i].len = 0;
+        window.addData[i].ch = NONE_CHAR;
     }
     window.charCount = 0;
 }
@@ -69,53 +58,52 @@ void addChar()
     for (int i = 0; i < window.screenX; i += 2)
     {
         int isNeedAdd = FALSE;
+
         for (int j = 0; j < window.charCount; j++)
         {
-            if (charData[j].x == i && charData[j].y == 1) { isNeedAdd = TRUE; }
+            if (window.charData[j].x == i && window.charData[j].y == 1) { isNeedAdd = TRUE; }
         }
-        if (isNeedAdd)
+        if (isNeedAdd && window.addData[i].len != 0)
         {
-            if (addData[i].len != 0)
-            {
-                charData[window.charCount].x = i;
-                charData[window.charCount].y = 0;
-                charData[window.charCount].color = GREEN;
-                charData[window.charCount].ch = addData[i].ch;
-                window.charCount += 1;
-                addData[i].len -= 1;
-            }
+            window.charData[window.charCount].x = i;
+            window.charData[window.charCount].y = 0;
+            window.charData[window.charCount].color = GREEN;
+            window.charData[window.charCount].ch = window.addData[i].ch;
+            window.charCount += 1;
+            window.addData[i].len -= 1;
         }
-        else
+        else if (rand() % RANDOM_BASE <= RANDOM_ADD)
         {
-            if (rand() % RANDOM_BASE <= RANDOM_ADD)
-            {
-                addData[i].len = rand() % (STRING_MAX_LEN - STRING_MIN_LEN) + STRING_MIN_LEN;
-                addData[i].ch = charList[rand() % CHAR_LIST_LEN];
-                charData[window.charCount].x = i;
-                charData[window.charCount].y = 0;
-                charData[window.charCount].color = WHITE;
-                charData[window.charCount].ch = addData[i].ch;
-                window.charCount += 1;
-            }
+            window.addData[i].len = rand() % (STRING_MAX_LEN - STRING_MIN_LEN) + STRING_MIN_LEN;
+            window.addData[i].ch = window.charList[rand() % strlen(window.charList)];
+            window.charData[window.charCount].x = i;
+            window.charData[window.charCount].y = 0;
+            window.charData[window.charCount].color = WHITE;
+            window.charData[window.charCount].ch = window.addData[i].ch;
+            window.charCount += 1;
         }
     }
 }
 
 void moveChar()
 {
-    for (int i = 0; i < window.charCount; i++) { charData[i].y += 1; }
+    for (int i = 0; i < window.charCount; i++)
+    {
+        window.charData[i].y += 1;
+    }
     for (int i = window.charCount - 1; i >= 0; i--)
     {
         int isBottomOne = TRUE;
+
         for (int j = 0; j < window.charCount; j++)
         {
-            if (charData[j].y == charData[i].y + 1 && charData[j].x == charData[i].x)
+            if (window.charData[j].y == window.charData[i].y + 1 && window.charData[j].x == window.charData[i].x)
             {
-                charData[i].ch = charData[j].ch;
+                window.charData[i].ch = window.charData[j].ch;
                 isBottomOne = FALSE;
             }
         }
-        if (isBottomOne) { charData[i].ch = charList[rand() % CHAR_LIST_LEN]; }
+        if (isBottomOne) { window.charData[i].ch = window.charList[rand() % strlen(window.charList)]; }
     }
 }
 
@@ -123,30 +111,48 @@ void deleteChar()
 {
     for (int i = 0; i < window.charCount; i++)
     {
-        if (charData[i].y >= window.screenY)
+        if (window.charData[i].y >= window.screenY)
         {
-            for (int j = i; charData[j].x != -1; j++) { charData[j] = charData[j + 1]; }
+            for (int j = i; window.charData[j].x != -1; j++) { window.charData[j] = window.charData[j + 1]; }
             window.charCount -= 1;
         }
     }
 }
 
-void displayChar()
+void update()
+{
+    addChar();
+    moveChar();
+    deleteChar();
+}
+
+void events()
+{
+    window.exitCode = getch();
+
+    if (window.exitCode == KEY_ESC)
+    {
+        window.status = EXIT;
+    }
+    if (window.screenX != COLS || window.screenY != LINES)
+    {
+        window.screenX = COLS;
+        window.screenY = LINES;
+        initData();
+    }
+}
+
+void display()
 {
     erase();
+    
     for (int i = 0; i < window.charCount; i++)
     {
-        if (charData[i].y < window.screenY)
+        if (window.charData[i].y < window.screenY)
         {
-            attron(COLOR_PAIR(charData[i].color));
-            mvaddch(charData[i].y, charData[i].x, charData[i].ch);
+            attron(COLOR_PAIR(window.charData[i].color));
+            mvaddch(window.charData[i].y, window.charData[i].x, window.charData[i].ch);
         }
     }
     refresh();
-}
-
-void exitInterval()
-{
-    window.exitCode = getch();
-    if (window.exitCode == KEY_ESC) { window.status = EXIT; }
 }
