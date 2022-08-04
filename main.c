@@ -1,28 +1,31 @@
 #include "matrix.h"
 
+struct Window window;
+
 int main()
 {
+    int startTick;
+    int endTick;
+    int delayTick;
+
+    srand((unsigned)time(NULL));
+
     initWindow();
     setWindow();
     setColor();
 
     while (window.status != EXIT)
     {
-        if (window.screenX != COLS || window.screenY != LINES) { initData(); }
+        startTick = clock();
 
-        window.screenX = COLS;
-        window.screenY = LINES;
+        events();
+        update();
+        display();
 
-        if (window.status == MOVE)
-        {
-            moveChar();
-            addChar();
-            deleteChar();
-            displayChar();
-            window.status = WAIT;
-        }
-        exitInterval();
-        usleep(DELAY);
+        endTick = clock();
+        delayTick = (INTERVAL - (endTick - startTick)) * 1000;
+
+        usleep((delayTick > 0) ? delayTick : 0);
     }
     unsetWindow();
     return 0;

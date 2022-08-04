@@ -6,11 +6,10 @@
 #define NONE -1
 #define NONE_CHAR '\0'
 
-#define WAIT 0
-#define MOVE 1
-#define EXIT 2
-#define INTERVAL 40000
-#define DELAY 1000
+#define RUNNING 0
+#define EXIT 1
+
+#define INTERVAL 40
 #define KEY_ESC 27
 
 #define WHITE 1
@@ -24,5 +23,5 @@
 #define CHAR_LIST "QWERTYUIOPASDFGHJKLZXCVBNM0123456789$&#"
 #define CHAR_MAX_COUNT 10000
 #define ADD_CHAR_COUNT 200
-#define CHAR_LIST_LEN 39
+#define CHAR_LIST_LEN 40
 #endif

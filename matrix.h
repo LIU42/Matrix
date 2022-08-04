@@ -4,7 +4,8 @@
 #include <stdlib.h>
 #include <ncurses.h>
 #include <unistd.h>
-#include <pthread.h>
+#include <string.h>
+#include <time.h>
 
 #include "config.h"
 
@@ -24,15 +25,15 @@ struct AddData
 
 struct Window
 {
-    pthread_t counter;
+    struct CharData charData[CHAR_MAX_COUNT];
+    struct AddData addData[ADD_CHAR_COUNT];
+    char charList[CHAR_LIST_LEN];
     int status;
     int screenX;
     int screenY;
     int exitCode;
     int charCount;
 };
-
-extern struct Window window;
 
 void initWindow();
 void setWindow();
@@ -42,6 +43,9 @@ void initData();
 void addChar();
 void moveChar();
 void deleteChar();
-void displayChar();
-void exitInterval();
+void update();
+void events();
+void display();
+
+extern struct Window window;
 #endif
