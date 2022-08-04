@@ -145,7 +145,7 @@ void events()
 void display()
 {
     erase();
-    
+
     for (int i = 0; i < window.charCount; i++)
     {
         if (window.charData[i].y < window.screenY)
