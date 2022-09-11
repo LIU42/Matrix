@@ -1,14 +1,14 @@
 #include "matrix.h"
 
-struct Window window;
+struct window window;
 
 int main()
 {
     srand((unsigned)time(NULL));
 
-    initWindow();
-    setWindow();
-    setColor();
+    init_window();
+    set_window();
+    set_color();
 
     while (window.status != EXIT)
     {
@@ -17,6 +17,6 @@ int main()
         display();
         usleep(DELAY_USEC);
     }
-    unsetWindow();
+    unset_window();
     return 0;
 }

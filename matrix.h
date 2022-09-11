@@ -9,7 +9,7 @@
 
 #include "config.h"
 
-struct CharData
+struct char_data
 {
     int x;
     int y;
@@ -17,35 +17,35 @@ struct CharData
     char ch;
 };
 
-struct AddData
+struct add_data
 {
     int len;
     char ch;
 };
 
-struct Window
+struct window
 {
-    struct CharData charData[CHAR_MAX_COUNT];
-    struct AddData addData[ADD_CHAR_COUNT];
-    char charList[CHAR_LIST_LEN];
+    struct char_data char_data[CHAR_MAX_COUNT];
+    struct add_data add_data[ADD_CHAR_COUNT];
+    char char_list[CHAR_LIST_LEN];
     int status;
-    int screenX;
-    int screenY;
-    int exitCode;
-    int charCount;
+    int screen_rows;
+    int screen_cols;
+    int exit_code;
+    int char_count;
 };
 
-void initWindow();
-void setWindow();
-void setColor();
-void unsetWindow();
-void initData();
-void addChar();
-void moveChar();
-void deleteChar();
+void init_window();
+void set_window();
+void set_color();
+void unset_window();
+void init_data();
+void add_char();
+void move_char();
+void delete_char();
 void update();
 void events();
 void display();
 
-extern struct Window window;
+extern struct window window;
 #endif
