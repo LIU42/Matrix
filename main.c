@@ -1,7 +1,5 @@
 #include "matrix.h"
 
-struct window window;
-
 int main()
 {
     srand((unsigned)time(NULL));
@@ -10,7 +8,7 @@ int main()
     set_window();
     set_color();
 
-    while (window.status != EXIT)
+    while (is_running())
     {
         update();
         events();

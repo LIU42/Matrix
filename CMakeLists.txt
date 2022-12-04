@@ -9,7 +9,6 @@ add_executable(
     main.c
     matrix.c
     matrix.h
-    config.h
 )
 
 target_link_libraries(Matrix ${CURSES_LIBRARY})

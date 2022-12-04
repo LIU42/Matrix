@@ -1,13 +1,14 @@
 #include "matrix.h"
 
+struct matrix matrix;
+
 void init_window()
 {
-    window.status = RUNNING;
-    window.screen_rows = 0;
-    window.screen_cols = 0;
-    window.exit_code = 0;
-    window.char_count = 0;
-    strcpy(window.char_list, CHAR_LIST);
+    matrix.status = RUNNING;
+    matrix.screen_rows = 0;
+    matrix.screen_cols = 0;
+    matrix.key_code = 0;
+    matrix.char_count = 0;
 }
 
 void set_window()
@@ -15,9 +16,9 @@ void set_window()
     initscr();
     cbreak();
     noecho();
-    curs_set(FALSE);
-    keypad(stdscr, TRUE);
-    nodelay(stdscr, TRUE);
+    curs_set(false);
+    keypad(stdscr, true);
+    nodelay(stdscr, true);
 }
 
 void set_color()
@@ -30,91 +31,96 @@ void set_color()
 void unset_window()
 {
     nocbreak();
-    keypad(stdscr, TRUE);
-    curs_set(TRUE);
+    keypad(stdscr, true);
+    curs_set(true);
     echo();
     endwin();
 }
 
 void init_data()
 {
-    for (int i = 0; i < CHAR_MAX_COUNT; i++)
+    for (int i = 0; i < CHAR_DATA_LEN; i++)
     {
-        window.char_data[i].x = NONE;
-        window.char_data[i].y = NONE;
-        window.char_data[i].color = NONE;
-        window.char_data[i].ch = NONE_CHAR;
+        matrix.char_data[i].x = -1;
+        matrix.char_data[i].y = -1;
+        matrix.char_data[i].color = -1;
+        matrix.char_data[i].ch = '\0';
     }
-    for (int i = 0; i < ADD_CHAR_COUNT; i++)
+    for (int i = 0; i < ADD_DATA_LEN; i++)
     {
-        window.add_data[i].len = 0;
-        window.add_data[i].ch = NONE_CHAR;
+        matrix.add_data[i].len = 0;
+        matrix.add_data[i].ch = '\0';
     }
-    window.char_count = 0;
+    matrix.char_count = 0;
+}
+
+bool is_running()
+{
+    return matrix.status != EXIT;
 }
 
 void add_char()
 {
-    for (int i = 0; i < window.screen_rows; i += 2)
+    for (int i = 0; i < matrix.screen_rows; i += 2)
     {
-        int is_need_add = FALSE;
+        bool is_need_add = false;
 
-        for (int j = 0; j < window.char_count; j++)
+        for (int j = 0; j < matrix.char_count; j++)
         {
-            if (window.char_data[j].x == i && window.char_data[j].y == 1) { is_need_add = TRUE; }
+            if (matrix.char_data[j].x == i && matrix.char_data[j].y == 1) { is_need_add = true; }
         }
-        if (is_need_add && window.add_data[i].len != 0)
+        if (is_need_add && matrix.add_data[i].len != 0)
         {
-            window.char_data[window.char_count].x = i;
-            window.char_data[window.char_count].y = 0;
-            window.char_data[window.char_count].color = GREEN;
-            window.char_data[window.char_count].ch = window.add_data[i].ch;
-            window.char_count += 1;
-            window.add_data[i].len -= 1;
+            matrix.char_data[matrix.char_count].x = i;
+            matrix.char_data[matrix.char_count].y = 0;
+            matrix.char_data[matrix.char_count].color = GREEN;
+            matrix.char_data[matrix.char_count].ch = matrix.add_data[i].ch;
+            matrix.char_count += 1;
+            matrix.add_data[i].len -= 1;
         }
         else if (rand() % RANDOM_BASE <= RANDOM_ADD)
         {
-            window.add_data[i].len = rand() % (STRING_MAX_LEN - STRING_MIN_LEN) + STRING_MIN_LEN;
-            window.add_data[i].ch = window.char_list[rand() % strlen(window.char_list)];
-            window.char_data[window.char_count].x = i;
-            window.char_data[window.char_count].y = 0;
-            window.char_data[window.char_count].color = WHITE;
-            window.char_data[window.char_count].ch = window.add_data[i].ch;
-            window.char_count += 1;
+            matrix.add_data[i].len = rand() % (STRING_MAX_LEN - STRING_MIN_LEN) + STRING_MIN_LEN;
+            matrix.add_data[i].ch = rand() % ('Z' - 'A' + 1) + 'A';
+            matrix.char_data[matrix.char_count].x = i;
+            matrix.char_data[matrix.char_count].y = 0;
+            matrix.char_data[matrix.char_count].color = WHITE;
+            matrix.char_data[matrix.char_count].ch = matrix.add_data[i].ch;
+            matrix.char_count += 1;
         }
     }
 }
 
 void move_char()
 {
-    for (int i = 0; i < window.char_count; i++)
+    for (int i = 0; i < matrix.char_count; i++)
     {
-        window.char_data[i].y += 1;
+        matrix.char_data[i].y += 1;
     }
-    for (int i = window.char_count - 1; i >= 0; i--)
+    for (int i = matrix.char_count - 1; i >= 0; i--)
     {
-        int is_bottom_one = TRUE;
+        bool is_bottom_one = true;
 
-        for (int j = 0; j < window.char_count; j++)
+        for (int j = 0; j < matrix.char_count; j++)
         {
-            if (window.char_data[j].y == window.char_data[i].y + 1 && window.char_data[j].x == window.char_data[i].x)
+            if (matrix.char_data[j].y == matrix.char_data[i].y + 1 && matrix.char_data[j].x == matrix.char_data[i].x)
             {
-                window.char_data[i].ch = window.char_data[j].ch;
-                is_bottom_one = FALSE;
+                matrix.char_data[i].ch = matrix.char_data[j].ch;
+                is_bottom_one = false;
             }
         }
-        if (is_bottom_one) { window.char_data[i].ch = window.char_list[rand() % strlen(window.char_list)]; }
+        if (is_bottom_one) { matrix.char_data[i].ch = rand() % ('Z' - 'A' + 1) + 'A'; }
     }
 }
 
 void delete_char()
 {
-    for (int i = 0; i < window.char_count; i++)
+    for (int i = 0; i < matrix.char_count; i++)
     {
-        if (window.char_data[i].y >= window.screen_cols)
+        if (matrix.char_data[i].y >= matrix.screen_cols)
         {
-            for (int j = i; window.char_data[j].x != -1; j++) { window.char_data[j] = window.char_data[j + 1]; }
-            window.char_count -= 1;
+            for (int j = i; matrix.char_data[j].x != -1; j++) { matrix.char_data[j] = matrix.char_data[j + 1]; }
+            matrix.char_count -= 1;
         }
     }
 }
@@ -128,16 +134,16 @@ void update()
 
 void events()
 {
-    window.exit_code = getch();
+    matrix.key_code = getch();
 
-    if (window.exit_code == KEY_ESC)
+    if (matrix.key_code == KEY_ESC)
     {
-        window.status = EXIT;
+        matrix.status = EXIT;
     }
-    if (window.screen_rows != COLS || window.screen_cols != LINES)
+    if (matrix.screen_rows != COLS || matrix.screen_cols != LINES)
     {
-        window.screen_rows = COLS;
-        window.screen_cols = LINES;
+        matrix.screen_rows = COLS;
+        matrix.screen_cols = LINES;
         init_data();
     }
 }
@@ -146,12 +152,12 @@ void display()
 {
     erase();
 
-    for (int i = 0; i < window.char_count; i++)
+    for (int i = 0; i < matrix.char_count; i++)
     {
-        if (window.char_data[i].y < window.screen_cols)
+        if (matrix.char_data[i].y < matrix.screen_cols)
         {
-            attron(COLOR_PAIR(window.char_data[i].color));
-            mvaddch(window.char_data[i].y, window.char_data[i].x, window.char_data[i].ch);
+            attron(COLOR_PAIR(matrix.char_data[i].color));
+            mvaddch(matrix.char_data[i].y, matrix.char_data[i].x, matrix.char_data[i].ch);
         }
     }
     refresh();

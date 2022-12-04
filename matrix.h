@@ -6,8 +6,30 @@
 #include <unistd.h>
 #include <string.h>
 #include <time.h>
+#include <stdbool.h>
 
-#include "config.h"
+#define DELAY_USEC 35000
+#define KEY_ESC 27
+
+#define RANDOM_ADD 5
+#define RANDOM_BASE 100
+#define STRING_MAX_LEN 25
+#define STRING_MIN_LEN 5
+
+#define CHAR_DATA_LEN 5000
+#define ADD_DATA_LEN 200
+
+enum status_enum
+{
+    RUNNING = 0,
+    EXIT = 1
+};
+
+enum color_enum
+{
+    WHITE = 1,
+    GREEN = 2
+};
 
 struct char_data
 {
@@ -23,15 +45,14 @@ struct add_data
     char ch;
 };
 
-struct window
+struct matrix
 {
-    struct char_data char_data[CHAR_MAX_COUNT];
-    struct add_data add_data[ADD_CHAR_COUNT];
-    char char_list[CHAR_LIST_LEN];
-    int status;
+    struct char_data char_data[CHAR_DATA_LEN];
+    struct add_data add_data[ADD_DATA_LEN];
+    enum status_enum status;
     int screen_rows;
     int screen_cols;
-    int exit_code;
+    int key_code;
     int char_count;
 };
 
@@ -40,6 +61,7 @@ void set_window();
 void set_color();
 void unset_window();
 void init_data();
+bool is_running();
 void add_char();
 void move_char();
 void delete_char();
@@ -47,5 +69,4 @@ void update();
 void events();
 void display();
 
-extern struct window window;
 #endif
