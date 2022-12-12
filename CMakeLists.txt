@@ -8,7 +8,6 @@ add_executable(
     Matrix
     main.c
     matrix.c
-    matrix.h
 )
 
 target_link_libraries(Matrix ${CURSES_LIBRARY})
