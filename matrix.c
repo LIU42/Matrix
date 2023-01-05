@@ -117,7 +117,10 @@ void Matrix_DeleteChar(Matrix* this)
     {
         if (this->char_data[i].y >= this->screen_cols)
         {
-            for (int j = i; this->char_data[j].x != -1; j++) { this->char_data[j] = this->char_data[j + 1]; }
+            for (int j = i; this->char_data[j].x != -1; j++)
+            {
+                this->char_data[j] = this->char_data[j + 1];
+            }
             this->char_count -= 1;
         }
     }
