@@ -2,19 +2,21 @@
 
 int main()
 {
+    Matrix matrix;
+
     srand((unsigned)time(NULL));
 
-    init_window();
-    set_window();
-    set_color();
+    Matrix_InitWindow(&matrix);
+    Matrix_SetWindow(&matrix);
+    Matrix_SetColor(&matrix);
 
-    while (is_running())
+    while (Matrix_IsRunning(&matrix))
     {
-        update();
-        events();
-        display();
+        Matrix_Update(&matrix);
+        Matrix_Events(&matrix);
+        Matrix_Display(&matrix);
         usleep(DELAY_USEC);
     }
-    unset_window();
+    Matrix_UnsetWindow(&matrix);
     return 0;
 }

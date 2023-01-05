@@ -8,30 +8,34 @@
 #include <time.h>
 #include <stdbool.h>
 
-#define DELAY_USEC 35000
-#define KEY_ESC 27
+enum Constant
+{
+    DELAY_USEC = 35000,
+    KEY_ESC = 27,
+    RANDOM_ADD = 5,
+    RANDOM_BASE = 100,
+    STRING_MAX_LEN = 25,
+    STRING_MIN_LEN = 5,
+    CHAR_DATA_LEN = 5000,
+    ADD_DATA_LEN = 200
+};
 
-#define RANDOM_ADD 5
-#define RANDOM_BASE 100
-#define STRING_MAX_LEN 25
-#define STRING_MIN_LEN 5
-
-#define CHAR_DATA_LEN 5000
-#define ADD_DATA_LEN 200
-
-enum status_enum
+enum Status
 {
     RUNNING = 0,
     EXIT = 1
 };
 
-enum color_enum
+enum Color
 {
     WHITE = 1,
     GREEN = 2
 };
 
-struct char_data
+typedef enum Status Status;
+typedef enum Color Color;
+
+struct CharData
 {
     int x;
     int y;
@@ -39,34 +43,39 @@ struct char_data
     char ch;
 };
 
-struct add_data
+struct AddData
 {
     int len;
     char ch;
 };
 
-struct matrix
+typedef struct CharData CharData;
+typedef struct AddData AddData;
+
+struct Matrix
 {
-    struct char_data char_data[CHAR_DATA_LEN];
-    struct add_data add_data[ADD_DATA_LEN];
-    enum status_enum status;
+    CharData char_data[CHAR_DATA_LEN];
+    AddData add_data[ADD_DATA_LEN];
+    Status status;
     int screen_rows;
     int screen_cols;
     int key_code;
     int char_count;
 };
 
-void init_window();
-void set_window();
-void set_color();
-void unset_window();
-void init_data();
-bool is_running();
-void add_char();
-void move_char();
-void delete_char();
-void update();
-void events();
-void display();
+typedef struct Matrix Matrix;
+
+void Matrix_InitWindow(Matrix*);
+void Matrix_SetWindow(Matrix*);
+void Matrix_SetColor(Matrix*);
+void Matrix_UnsetWindow(Matrix*);
+void Matrix_InitData(Matrix*);
+bool Matrix_IsRunning(Matrix*);
+void Matrix_AddChar(Matrix*);
+void Matrix_MoveChar(Matrix*);
+void Matrix_DeleteChar(Matrix*);
+void Matrix_Update(Matrix*);
+void Matrix_Events(Matrix*);
+void Matrix_Display(Matrix*);
 
 #endif
