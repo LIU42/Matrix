@@ -65,17 +65,17 @@ struct Matrix
 
 typedef struct Matrix Matrix;
 
-void Matrix_InitWindow(Matrix*);
-void Matrix_SetWindow(Matrix*);
-void Matrix_SetColor(Matrix*);
-void Matrix_UnsetWindow(Matrix*);
-void Matrix_InitData(Matrix*);
-bool Matrix_IsRunning(Matrix*);
-void Matrix_AddChar(Matrix*);
-void Matrix_MoveChar(Matrix*);
-void Matrix_DeleteChar(Matrix*);
-void Matrix_Update(Matrix*);
-void Matrix_Events(Matrix*);
-void Matrix_Display(Matrix*);
+void init_window(Matrix*);
+void set_window(Matrix*);
+void set_color(Matrix*);
+void unset_window(Matrix*);
+void init_data(Matrix*);
+bool is_running(Matrix*);
+void add_char(Matrix*);
+void move_char(Matrix*);
+void delete_char(Matrix*);
+void update(Matrix*);
+void events(Matrix*);
+void display(Matrix*);
 
 #endif

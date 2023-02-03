@@ -1,6 +1,6 @@
 #include "matrix.h"
 
-void Matrix_InitWindow(Matrix* this)
+void init_window(Matrix* this)
 {
     this->status = RUNNING;
     this->screen_rows = 0;
@@ -9,7 +9,7 @@ void Matrix_InitWindow(Matrix* this)
     this->char_count = 0;
 }
 
-void Matrix_SetWindow(Matrix* this)
+void set_window(Matrix* this)
 {
     initscr();
     cbreak();
@@ -19,14 +19,14 @@ void Matrix_SetWindow(Matrix* this)
     nodelay(stdscr, true);
 }
 
-void Matrix_SetColor(Matrix* this)
+void set_color(Matrix* this)
 {
     start_color();
     init_pair(WHITE, COLOR_WHITE, COLOR_BLACK);
     init_pair(GREEN, COLOR_GREEN, COLOR_BLACK);
 }
 
-void Matrix_UnsetWindow(Matrix* this)
+void unset_window(Matrix* this)
 {
     nocbreak();
     keypad(stdscr, true);
@@ -35,7 +35,7 @@ void Matrix_UnsetWindow(Matrix* this)
     endwin();
 }
 
-void Matrix_InitData(Matrix* this)
+void init_data(Matrix* this)
 {
     for (int i = 0; i < CHAR_DATA_LEN; i++)
     {
@@ -52,12 +52,12 @@ void Matrix_InitData(Matrix* this)
     this->char_count = 0;
 }
 
-bool Matrix_IsRunning(Matrix* this)
+bool is_running(Matrix* this)
 {
     return this->status != EXIT;
 }
 
-void Matrix_AddChar(Matrix* this)
+void add_char(Matrix* this)
 {
     for (int i = 0; i < this->screen_rows; i += 2)
     {
@@ -89,7 +89,7 @@ void Matrix_AddChar(Matrix* this)
     }
 }
 
-void Matrix_MoveChar(Matrix* this)
+void move_char(Matrix* this)
 {
     for (int i = 0; i < this->char_count; i++)
     {
@@ -111,7 +111,7 @@ void Matrix_MoveChar(Matrix* this)
     }
 }
 
-void Matrix_DeleteChar(Matrix* this)
+void delete_char(Matrix* this)
 {
     for (int i = 0; i < this->char_count; i++)
     {
@@ -126,14 +126,14 @@ void Matrix_DeleteChar(Matrix* this)
     }
 }
 
-void Matrix_Update(Matrix* this)
+void update(Matrix* this)
 {
-    Matrix_MoveChar(this);
-    Matrix_AddChar(this);
-    Matrix_DeleteChar(this);
+    move_char(this);
+    add_char(this);
+    delete_char(this);
 }
 
-void Matrix_Events(Matrix* this)
+void events(Matrix* this)
 {
     this->key_code = getch();
 
@@ -145,11 +145,11 @@ void Matrix_Events(Matrix* this)
     {
         this->screen_rows = COLS;
         this->screen_cols = LINES;
-        Matrix_InitData(this);
+        init_data(this);
     }
 }
 
-void Matrix_Display(Matrix* this)
+void display(Matrix* this)
 {
     erase();
 

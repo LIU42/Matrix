@@ -6,17 +6,17 @@ int main()
 
     srand((unsigned)time(NULL));
 
-    Matrix_InitWindow(&matrix);
-    Matrix_SetWindow(&matrix);
-    Matrix_SetColor(&matrix);
+    init_window(&matrix);
+    set_window(&matrix);
+    set_color(&matrix);
 
-    while (Matrix_IsRunning(&matrix))
+    while (is_running(&matrix))
     {
-        Matrix_Update(&matrix);
-        Matrix_Events(&matrix);
-        Matrix_Display(&matrix);
+        update(&matrix);
+        events(&matrix);
+        display(&matrix);
         usleep(DELAY_USEC);
     }
-    Matrix_UnsetWindow(&matrix);
+    unset_window(&matrix);
     return 0;
 }
