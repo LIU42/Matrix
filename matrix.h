@@ -8,6 +8,13 @@
 #include <time.h>
 #include <stdbool.h>
 
+typedef enum Status Status;
+typedef enum Color Color;
+
+typedef struct CharData CharData;
+typedef struct AddData AddData;
+typedef struct Matrix Matrix;
+
 enum Constant
 {
     DELAY_USEC = 35000,
@@ -32,9 +39,6 @@ enum Color
     GREEN = 2
 };
 
-typedef enum Status Status;
-typedef enum Color Color;
-
 struct CharData
 {
     int x;
@@ -49,9 +53,6 @@ struct AddData
     char ch;
 };
 
-typedef struct CharData CharData;
-typedef struct AddData AddData;
-
 struct Matrix
 {
     CharData char_data[CHAR_DATA_LEN];
@@ -62,8 +63,6 @@ struct Matrix
     int key_code;
     int char_count;
 };
-
-typedef struct Matrix Matrix;
 
 void init_window(Matrix*);
 void set_window(Matrix*);
