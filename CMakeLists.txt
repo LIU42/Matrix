@@ -7,6 +7,5 @@ include_directories(${CURSES_INCLUDE_DIR})
 file(GLOB SOURCES_FILES
     ${PROJECT_SOURCE_DIR}/*.c
 )
-
 add_executable(Matrix ${SOURCES_FILES})
 target_link_libraries(Matrix ${CURSES_LIBRARY})
