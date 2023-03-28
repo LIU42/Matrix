@@ -1,6 +1,6 @@
 #include "matrix.h"
 
-int main()
+int main(int argc, char* argv[])
 {
     Matrix matrix;
 
@@ -18,5 +18,5 @@ int main()
         usleep(DELAY_USEC);
     }
     unset_window(&matrix);
-    return 0;
+    return EXIT_SUCCESS;
 }
