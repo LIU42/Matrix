@@ -1,15 +1,15 @@
 #include "matrix.h"
 
-void init_window(Matrix* this)
+void initWindow(Matrix* pMatrix)
 {
-    this->status = RUNNING;
-    this->screen_rows = 0;
-    this->screen_cols = 0;
-    this->key_code = 0;
-    this->char_count = 0;
+    pMatrix->status = RUNNING;
+    pMatrix->screenRows = 0;
+    pMatrix->screenCols = 0;
+    pMatrix->keyCode = 0;
+    pMatrix->charCount = 0;
 }
 
-void set_window(Matrix* this)
+void setWindow(Matrix* pMatrix)
 {
     initscr();
     cbreak();
@@ -19,14 +19,14 @@ void set_window(Matrix* this)
     nodelay(stdscr, true);
 }
 
-void set_color(Matrix* this)
+void setColor(Matrix* pMatrix)
 {
     start_color();
     init_pair(WHITE, COLOR_WHITE, COLOR_BLACK);
     init_pair(GREEN, COLOR_GREEN, COLOR_BLACK);
 }
 
-void unset_window(Matrix* this)
+void unsetWindow(Matrix* pMatrix)
 {
     nocbreak();
     keypad(stdscr, true);
@@ -35,130 +35,130 @@ void unset_window(Matrix* this)
     endwin();
 }
 
-void init_data(Matrix* this)
+void initData(Matrix* pMatrix)
 {
-    for (int i = 0; i < CHAR_DATA_LEN; i++)
+    for (int i = 0; i < CHAR_LIST_LENGTH; i++)
     {
-        this->char_data[i].x = -1;
-        this->char_data[i].y = -1;
-        this->char_data[i].color = -1;
-        this->char_data[i].ch = '\0';
+        pMatrix->charDataList[i].x = -1;
+        pMatrix->charDataList[i].y = -1;
+        pMatrix->charDataList[i].color = WHITE;
+        pMatrix->charDataList[i].character = '\0';
     }
-    for (int i = 0; i < ADD_DATA_LEN; i++)
+    for (int i = 0; i < ADD_LIST_LENGTH; i++)
     {
-        this->add_data[i].len = 0;
-        this->add_data[i].ch = '\0';
+        pMatrix->addDataList[i].length = 0;
+        pMatrix->addDataList[i].character = '\0';
     }
-    this->char_count = 0;
+    pMatrix->charCount = 0;
 }
 
-bool is_running(Matrix* this)
+bool isRunning(Matrix* pMatrix)
 {
-    return this->status != EXIT;
+    return pMatrix->status != EXIT;
 }
 
-void add_char(Matrix* this)
+void addChar(Matrix* pMatrix)
 {
-    for (int i = 0; i < this->screen_rows; i += 2)
+    for (int i = 0; i < pMatrix->screenRows; i += 2)
     {
-        bool is_need_add = false;
+        bool isNeedAdd = false;
 
-        for (int j = 0; j < this->char_count; j++)
+        for (int j = 0; j < pMatrix->charCount; j++)
         {
-            if (this->char_data[j].x == i && this->char_data[j].y == 1) { is_need_add = true; }
+            if (pMatrix->charDataList[j].x == i && pMatrix->charDataList[j].y == 1) { isNeedAdd = true; }
         }
-        if (is_need_add && this->add_data[i].len != 0)
+        if (isNeedAdd && pMatrix->addDataList[i].length != 0)
         {
-            this->char_data[this->char_count].x = i;
-            this->char_data[this->char_count].y = 0;
-            this->char_data[this->char_count].color = GREEN;
-            this->char_data[this->char_count].ch = this->add_data[i].ch;
-            this->char_count += 1;
-            this->add_data[i].len -= 1;
+            pMatrix->charDataList[pMatrix->charCount].x = i;
+            pMatrix->charDataList[pMatrix->charCount].y = 0;
+            pMatrix->charDataList[pMatrix->charCount].color = GREEN;
+            pMatrix->charDataList[pMatrix->charCount].character = pMatrix->addDataList[i].character;
+            pMatrix->charCount += 1;
+            pMatrix->addDataList[i].length -= 1;
         }
-        else if (rand() % RANDOM_BASE <= RANDOM_ADD)
+        else if (rand() % RANDOM_MOD <= RANDOM_ADD)
         {
-            this->add_data[i].len = rand() % (STRING_MAX_LEN - STRING_MIN_LEN) + STRING_MIN_LEN;
-            this->add_data[i].ch = rand() % ('Z' - 'A' + 1) + 'A';
-            this->char_data[this->char_count].x = i;
-            this->char_data[this->char_count].y = 0;
-            this->char_data[this->char_count].color = WHITE;
-            this->char_data[this->char_count].ch = this->add_data[i].ch;
-            this->char_count += 1;
+            pMatrix->addDataList[i].length = rand() % (STRING_MAX_LENGTH - STRING_MIN_LENGTH) + STRING_MIN_LENGTH;
+            pMatrix->addDataList[i].character = rand() % ('Z' - 'A' + 1) + 'A';
+            pMatrix->charDataList[pMatrix->charCount].x = i;
+            pMatrix->charDataList[pMatrix->charCount].y = 0;
+            pMatrix->charDataList[pMatrix->charCount].color = WHITE;
+            pMatrix->charDataList[pMatrix->charCount].character = pMatrix->addDataList[i].character;
+            pMatrix->charCount += 1;
         }
     }
 }
 
-void move_char(Matrix* this)
+void moveChar(Matrix* pMatrix)
 {
-    for (int i = 0; i < this->char_count; i++)
+    for (int i = 0; i < pMatrix->charCount; i++)
     {
-        this->char_data[i].y += 1;
+        pMatrix->charDataList[i].y += 1;
     }
-    for (int i = this->char_count - 1; i >= 0; i--)
+    for (int i = pMatrix->charCount - 1; i >= 0; i--)
     {
-        bool is_bottom_one = true;
+        bool isBottomOne = true;
 
-        for (int j = 0; j < this->char_count; j++)
+        for (int j = 0; j < pMatrix->charCount; j++)
         {
-            if (this->char_data[j].y == this->char_data[i].y + 1 && this->char_data[j].x == this->char_data[i].x)
+            if (pMatrix->charDataList[j].y == pMatrix->charDataList[i].y + 1 && pMatrix->charDataList[j].x == pMatrix->charDataList[i].x)
             {
-                this->char_data[i].ch = this->char_data[j].ch;
-                is_bottom_one = false;
+                pMatrix->charDataList[i].character = pMatrix->charDataList[j].character;
+                isBottomOne = false;
             }
         }
-        if (is_bottom_one) { this->char_data[i].ch = rand() % ('Z' - 'A' + 1) + 'A'; }
+        if (isBottomOne) { pMatrix->charDataList[i].character = rand() % ('Z' - 'A' + 1) + 'A'; }
     }
 }
 
-void delete_char(Matrix* this)
+void deleteChar(Matrix* pMatrix)
 {
-    for (int i = 0; i < this->char_count; i++)
+    for (int i = 0; i < pMatrix->charCount; i++)
     {
-        if (this->char_data[i].y >= this->screen_cols)
+        if (pMatrix->charDataList[i].y >= pMatrix->screenCols)
         {
-            for (int j = i; this->char_data[j].x != -1; j++)
+            for (int j = i; pMatrix->charDataList[j].x != -1; j++)
             {
-                this->char_data[j] = this->char_data[j + 1];
+                pMatrix->charDataList[j] = pMatrix->charDataList[j + 1];
             }
-            this->char_count -= 1;
+            pMatrix->charCount -= 1;
         }
     }
 }
 
-void update(Matrix* this)
+void update(Matrix* pMatrix)
 {
-    move_char(this);
-    add_char(this);
-    delete_char(this);
+    moveChar(pMatrix);
+    addChar(pMatrix);
+    deleteChar(pMatrix);
 }
 
-void events(Matrix* this)
+void events(Matrix* pMatrix)
 {
-    this->key_code = getch();
+    pMatrix->keyCode = getch();
 
-    if (this->key_code == KEY_ESC)
+    if (pMatrix->keyCode == KEY_ESC)
     {
-        this->status = EXIT;
+        pMatrix->status = EXIT;
     }
-    if (this->screen_rows != COLS || this->screen_cols != LINES)
+    if (pMatrix->screenRows != COLS || pMatrix->screenCols != LINES)
     {
-        this->screen_rows = COLS;
-        this->screen_cols = LINES;
-        init_data(this);
+        pMatrix->screenRows = COLS;
+        pMatrix->screenCols = LINES;
+        initData(pMatrix);
     }
 }
 
-void display(Matrix* this)
+void display(Matrix* pMatrix)
 {
     erase();
 
-    for (int i = 0; i < this->char_count; i++)
+    for (int i = 0; i < pMatrix->charCount; i++)
     {
-        if (this->char_data[i].y < this->screen_cols)
+        if (pMatrix->charDataList[i].y < pMatrix->screenCols)
         {
-            attron(COLOR_PAIR(this->char_data[i].color));
-            mvaddch(this->char_data[i].y, this->char_data[i].x, this->char_data[i].ch);
+            attron(COLOR_PAIR(pMatrix->charDataList[i].color));
+            mvaddch(pMatrix->charDataList[i].y, pMatrix->charDataList[i].x, pMatrix->charDataList[i].character);
         }
     }
     refresh();

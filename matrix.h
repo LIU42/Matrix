@@ -4,7 +4,6 @@
 #include <ncurses.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <string.h>
 #include <time.h>
 #include <stdbool.h>
 
@@ -20,11 +19,11 @@ enum Constant
     DELAY_USEC = 35000,
     KEY_ESC = 27,
     RANDOM_ADD = 5,
-    RANDOM_BASE = 100,
-    STRING_MAX_LEN = 25,
-    STRING_MIN_LEN = 5,
-    CHAR_DATA_LEN = 5000,
-    ADD_DATA_LEN = 200
+    RANDOM_MOD = 100,
+    STRING_MAX_LENGTH = 25,
+    STRING_MIN_LENGTH = 5,
+    CHAR_LIST_LENGTH = 5000,
+    ADD_LIST_LENGTH = 200
 };
 
 enum Status
@@ -43,36 +42,36 @@ struct CharData
 {
     int x;
     int y;
-    int color;
-    char ch;
+    char character;
+    Color color;
 };
 
 struct AddData
 {
-    int len;
-    char ch;
+    int length;
+    char character;
 };
 
 struct Matrix
 {
-    CharData char_data[CHAR_DATA_LEN];
-    AddData add_data[ADD_DATA_LEN];
+    CharData charDataList[CHAR_LIST_LENGTH];
+    AddData addDataList[ADD_LIST_LENGTH];
     Status status;
-    int screen_rows;
-    int screen_cols;
-    int key_code;
-    int char_count;
+    int screenRows;
+    int screenCols;
+    int keyCode;
+    int charCount;
 };
 
-void init_window(Matrix*);
-void set_window(Matrix*);
-void set_color(Matrix*);
-void unset_window(Matrix*);
-void init_data(Matrix*);
-bool is_running(Matrix*);
-void add_char(Matrix*);
-void move_char(Matrix*);
-void delete_char(Matrix*);
+void initWindow(Matrix*);
+void setWindow(Matrix*);
+void setColor(Matrix*);
+void unsetWindow(Matrix*);
+void initData(Matrix*);
+bool isRunning(Matrix*);
+void addChar(Matrix*);
+void moveChar(Matrix*);
+void deleteChar(Matrix*);
 void update(Matrix*);
 void events(Matrix*);
 void display(Matrix*);

@@ -6,17 +6,17 @@ int main(int argc, char* argv[])
 
     srand((unsigned)time(NULL));
 
-    init_window(&matrix);
-    set_window(&matrix);
-    set_color(&matrix);
+    initWindow(&matrix);
+    setWindow(&matrix);
+    setColor(&matrix);
 
-    while (is_running(&matrix))
+    while (isRunning(&matrix))
     {
         update(&matrix);
         events(&matrix);
         display(&matrix);
         usleep(DELAY_USEC);
     }
-    unset_window(&matrix);
+    unsetWindow(&matrix);
     return EXIT_SUCCESS;
 }
