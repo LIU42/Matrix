@@ -7,24 +7,21 @@
 #include <time.h>
 #include <stdbool.h>
 
+#define DELAY_USEC 35000
+#define KEY_ESC 27
+#define RANDOM_ADD 5
+#define RANDOM_MOD 100
+#define STREAM_MAX_LENGTH 25
+#define STREAM_MIN_LENGTH 5
+#define CHAR_LIST_LENGTH 5000
+#define ADD_LIST_LENGTH 200
+
 typedef enum Status Status;
 typedef enum Color Color;
 
 typedef struct CharData CharData;
 typedef struct AddData AddData;
 typedef struct Matrix Matrix;
-
-enum Constant
-{
-    DELAY_USEC = 35000,
-    KEY_ESC = 27,
-    RANDOM_ADD = 5,
-    RANDOM_MOD = 100,
-    STRING_MAX_LENGTH = 25,
-    STRING_MIN_LENGTH = 5,
-    CHAR_LIST_LENGTH = 5000,
-    ADD_LIST_LENGTH = 200
-};
 
 enum Status
 {
@@ -42,7 +39,7 @@ struct CharData
 {
     int x;
     int y;
-    char character;
+    char unitChar;
     Color color;
 };
 

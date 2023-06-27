@@ -42,7 +42,7 @@ void initData(Matrix* pMatrix)
         pMatrix->charDataList[i].x = -1;
         pMatrix->charDataList[i].y = -1;
         pMatrix->charDataList[i].color = WHITE;
-        pMatrix->charDataList[i].character = '\0';
+        pMatrix->charDataList[i].unitChar = '\0';
     }
     for (int i = 0; i < ADD_LIST_LENGTH; i++)
     {
@@ -72,18 +72,18 @@ void addChar(Matrix* pMatrix)
             pMatrix->charDataList[pMatrix->charCount].x = i;
             pMatrix->charDataList[pMatrix->charCount].y = 0;
             pMatrix->charDataList[pMatrix->charCount].color = GREEN;
-            pMatrix->charDataList[pMatrix->charCount].character = pMatrix->addDataList[i].character;
+            pMatrix->charDataList[pMatrix->charCount].unitChar = pMatrix->addDataList[i].character;
             pMatrix->charCount += 1;
             pMatrix->addDataList[i].length -= 1;
         }
         else if (rand() % RANDOM_MOD <= RANDOM_ADD)
         {
-            pMatrix->addDataList[i].length = rand() % (STRING_MAX_LENGTH - STRING_MIN_LENGTH) + STRING_MIN_LENGTH;
+            pMatrix->addDataList[i].length = rand() % (STREAM_MAX_LENGTH - STREAM_MIN_LENGTH) + STREAM_MIN_LENGTH;
             pMatrix->addDataList[i].character = rand() % ('Z' - 'A' + 1) + 'A';
             pMatrix->charDataList[pMatrix->charCount].x = i;
             pMatrix->charDataList[pMatrix->charCount].y = 0;
             pMatrix->charDataList[pMatrix->charCount].color = WHITE;
-            pMatrix->charDataList[pMatrix->charCount].character = pMatrix->addDataList[i].character;
+            pMatrix->charDataList[pMatrix->charCount].unitChar = pMatrix->addDataList[i].character;
             pMatrix->charCount += 1;
         }
     }
@@ -103,11 +103,11 @@ void moveChar(Matrix* pMatrix)
         {
             if (pMatrix->charDataList[j].y == pMatrix->charDataList[i].y + 1 && pMatrix->charDataList[j].x == pMatrix->charDataList[i].x)
             {
-                pMatrix->charDataList[i].character = pMatrix->charDataList[j].character;
+                pMatrix->charDataList[i].unitChar = pMatrix->charDataList[j].unitChar;
                 isBottomOne = false;
             }
         }
-        if (isBottomOne) { pMatrix->charDataList[i].character = rand() % ('Z' - 'A' + 1) + 'A'; }
+        if (isBottomOne) { pMatrix->charDataList[i].unitChar = rand() % ('Z' - 'A' + 1) + 'A'; }
     }
 }
 
@@ -158,7 +158,7 @@ void display(Matrix* pMatrix)
         if (pMatrix->charDataList[i].y < pMatrix->screenCols)
         {
             attron(COLOR_PAIR(pMatrix->charDataList[i].color));
-            mvaddch(pMatrix->charDataList[i].y, pMatrix->charDataList[i].x, pMatrix->charDataList[i].character);
+            mvaddch(pMatrix->charDataList[i].y, pMatrix->charDataList[i].x, pMatrix->charDataList[i].unitChar);
         }
     }
     refresh();
