@@ -5,7 +5,7 @@ find_package(Curses REQUIRED)
 include_directories(${CURSES_INCLUDE_DIR})
 
 file(GLOB SOURCES_FILES
-    ${PROJECT_SOURCE_DIR}/*.c
+    ${PROJECT_SOURCE_DIR}/*.cpp
 )
 add_executable(Matrix ${SOURCES_FILES})
 target_link_libraries(Matrix ${CURSES_LIBRARY})
