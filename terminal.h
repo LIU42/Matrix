@@ -23,12 +23,13 @@ class Terminal
         static const int RANDOM_MOD = 100;
 
     private:
+        bool isEnableList[SCREEN_ROWS_MAX];
         int screenRows;
         int screenCols;
 
     private:
-        Status status;
         list<Stream> streamList;
+        Status status;
 
     private:
         void initTerminal();

@@ -48,11 +48,9 @@ void Terminal::unsetCurses()
 
 void Terminal::addNewStreams()
 {
-    bool isEnableList[SCREEN_ROWS_MAX];
-
-    for (int x = 0; x < screenRows; x++)
+    for (int x = 1; x < screenRows; x += 2)
     {
-        isEnableList[x] = (x % 2 == 1) ? true : false;
+        isEnableList[x] = true;
     }
     for (auto streamIter = streamList.begin(); streamIter != streamList.end(); ++streamIter)
     {
@@ -61,7 +59,7 @@ void Terminal::addNewStreams()
             isEnableList[streamIter->getHeadX()] = false;
         }
     }
-    for (int x = 0; x < screenRows; x++)
+    for (int x = 1; x < screenRows; x += 2)
     {
         if (isEnableList[x] && rand() % RANDOM_MOD <= RANDOM_ADD)
         {

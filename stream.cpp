@@ -36,11 +36,8 @@ void Stream::display()
 
     for (auto charIter = charList.begin(); charIter != charList.end(); ++charIter, ++charIndex)
     {
-        int x = headX;
-        int y = headY - charIndex;
-
         attron(COLOR_PAIR((charIndex == 0) ? WHITE : GREEN));
-        mvaddch(y, x, *charIter);
+        mvaddch(headY - charIndex, headX, *charIter);
     }
 }
 
