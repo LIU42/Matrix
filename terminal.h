@@ -1,3 +1,6 @@
+#ifndef __TERMINAL_H__
+#define __TERMINAL_H__
+
 #include <ncurses.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -53,3 +56,4 @@ class Terminal
         void display();
         void delay();
 };
+#endif

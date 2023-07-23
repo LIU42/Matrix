@@ -1,3 +1,6 @@
+#ifndef __STREAM_H__
+#define __STREAM_H__
+
 #include <ncurses.h>
 #include <stdlib.h>
 #include <list>
@@ -37,3 +40,4 @@ class Stream
         int getHeadY();
         int getLength();
 };
+#endif
