@@ -15,7 +15,7 @@ Terminal::~Terminal()
 
 void Terminal::initTerminal()
 {
-    status = RUNNING;
+    status = STATUS_RUNNING;
     screenRows = 0;
     screenCols = 0;
 }
@@ -90,7 +90,7 @@ void Terminal::deleteStreams()
 
 bool Terminal::isRunning()
 {
-    return status == RUNNING;
+    return status == STATUS_RUNNING;
 }
 
 void Terminal::update()
@@ -106,7 +106,7 @@ void Terminal::events()
 
     if (keyCode == KEY_ESC)
     {
-        status = EXIT;
+        status = STATUS_EXIT;
     }
     if (screenRows != COLS || screenCols != LINES)
     {

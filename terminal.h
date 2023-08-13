@@ -11,7 +11,11 @@
 
 using namespace std;
 
-enum Status { RUNNING, EXIT };
+enum TerminalStatus
+{
+    STATUS_RUNNING,
+    STATUS_EXIT
+};
 
 class Terminal
 {
@@ -32,7 +36,7 @@ class Terminal
 
     private:
         list<Stream> streamList;
-        Status status;
+        TerminalStatus status;
 
     private:
         void initTerminal();
