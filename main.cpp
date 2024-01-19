@@ -1,15 +1,15 @@
-#include "terminal.h"
+#include "window.h"
 
 int main(int argc, char* argv[])
 {
-    Terminal terminal;
+    terminal_window window;
 
-    while (terminal.isRunning())
+    while (window.is_running())
     {
-        terminal.update();
-        terminal.events();
-        terminal.display();
-        terminal.delay();
+        window.update();
+        window.events();
+        window.display();
+        window.delay();
     }
     return EXIT_SUCCESS;
 }

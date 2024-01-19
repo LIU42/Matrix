@@ -7,37 +7,35 @@
 
 using namespace std;
 
-class Stream
+class char_stream
 {
     private:
-        static const int MAX_LENGTH = 25;
-        static const int MIN_LENGTH = 5;
+        static constexpr int MAX_LENGTH = 25;
+        static constexpr int MIN_LENGTH = 5;
 
     public:
-        static const int WHITE = 1;
-        static const int GREEN = 2;
+        static constexpr int WHITE_COLOR = 1;
+        static constexpr int GREEN_COLOR = 2;
 
     private:
-        int headX;
-        int headY;
+        list<char> char_list;
+        int head_x;
+        int head_y;
 
     private:
-        list<char> charList;
-
-    private:
-        int getRandomLength();
-        char getRandomChar();
+        int get_random_length();
+        char get_random_char();
 
     public:
-        Stream(int);
+        char_stream(int);
 
     public:
         void move();
         void display();
 
     public:
-        int getHeadX();
-        int getHeadY();
-        int getLength();
+        int get_head_x();
+        int get_head_y();
+        int get_length();
 };
 #endif

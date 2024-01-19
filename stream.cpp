@@ -1,57 +1,56 @@
 #include "stream.h"
 
-Stream::Stream(int x)
+char_stream::char_stream(int x)
 {
-    int length = getRandomLength();
-
-    headX = x;
-    headY = 0;
+    int length = get_random_length();
 
     for (int i = 0; i < length; i++)
     {
-        charList.push_back(getRandomChar());
+        char_list.push_back(get_random_char());
     }
+    head_x = x;
+    head_y = 0;
 }
 
-int Stream::getRandomLength()
+int char_stream::get_random_length()
 {
     return rand() % (MAX_LENGTH - MIN_LENGTH) + MIN_LENGTH;
 }
 
-char Stream::getRandomChar()
+char char_stream::get_random_char()
 {
     return rand() % ('Z' - 'A' + 1) + 'A';
 }
 
-void Stream::move()
+void char_stream::move()
 {
-    charList.push_front(getRandomChar());
-    charList.pop_back();
-    headY += 1;
+    char_list.push_front(get_random_char());
+    char_list.pop_back();
+    head_y += 1;
 }
 
-void Stream::display()
+void char_stream::display()
 {
-    int charIndex = 0;
+    int char_index = 0;
 
-    for (auto charIter = charList.begin(); charIter != charList.end(); ++charIter, ++charIndex)
+    for (auto char_iter = char_list.begin(); char_iter != char_list.end(); ++char_iter, ++char_index)
     {
-        attron(COLOR_PAIR((charIndex == 0) ? WHITE : GREEN));
-        mvaddch(headY - charIndex, headX, *charIter);
+        attron(COLOR_PAIR((char_index == 0) ? WHITE_COLOR : GREEN_COLOR));
+        mvaddch(head_y - char_index, head_x, *char_iter);
     }
 }
 
-int Stream::getHeadX()
+int char_stream::get_head_x()
 {
-    return headX;
+    return head_x;
 }
 
-int Stream::getHeadY()
+int char_stream::get_head_y()
 {
-    return headY;
+    return head_y;
 }
 
-int Stream::getLength()
+int char_stream::get_length()
 {
-    return charList.size();
+    return char_list.size();
 }
